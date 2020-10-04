@@ -15,6 +15,7 @@ const pass = "volunteer12345";
 
 
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
 const uri = "mongodb+srv://volunteer:volunteer12345@cluster0.e0dyf.mongodb.net/volunteer-network?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
@@ -29,11 +30,34 @@ client.connect(err => {
       console.log(newUser);
   })
   app.get('/showEvents', (req, res) => {
+    newUserCollection.find({email:req.query.email})
+    .toArray((err, documents) => {
+      res.send(documents);
+    })
+  })
+
+  app.delete('/delete/:id', (req, res) => {
+   // console.log(ObjectId(req.params.id));
+    newUserCollection.deleteOne({_id: ObjectId(req.params.id)})
+    .then( result => {
+      console.log(result);
+    })
+  })
+
+  app.get('/allVolunteer', (req, res) => {
     newUserCollection.find({})
     .toArray((err, documents) => {
       res.send(documents);
     })
   })
+  //delete registerd person
+  app.delete('/deleteRegPerson/:id', (req, res) => {
+    // console.log(ObjectId(req.params.id));
+     newUserCollection.deleteOne({_id: ObjectId(req.params.id)})
+     .then( result => {
+       console.log(result);
+     })
+   })
   
 
 });
