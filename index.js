@@ -6,11 +6,13 @@ const port = 5000;
 
 const app = express();
 
+require('dotenv').config()
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-require('dotenv').config();
+
 
 
 
@@ -21,11 +23,13 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const newUserCollection = client.db("volunteer-network-").collection("volunteer");
 
+
   app.post('/addUser', (req, res) => {
       const newUser = req.body;
       newUserCollection.insertOne(newUser)
       .then( result => {
           res.send(result.insertedCount > 0);
+        
       })
       console.log(newUser);
   })
