@@ -1,12 +1,12 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config()
 const port = 4000;
-
 
 const app = express();
 
-require('dotenv').config()
+
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -32,7 +32,7 @@ client.connect(err => {
         
       })
       console.log(newUser);
-  })
+  });
   app.get('/showEvents', (req, res) => {
     newUserCollection.find({email:req.query.email})
     .toArray((err, documents) => {
